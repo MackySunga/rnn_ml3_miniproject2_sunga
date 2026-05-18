@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RNN Audio Deepfake Dashboard</title>
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
+</head>
+<body>
+  <div class="dashboard-app">
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-brand">
+        <div class="brand-symbol">R</div>
+        <div class="brand-copy"><strong>RNN Audio Lab</strong><span>Deepfake Detection</span></div>
+      </div>
+      <div class="sidebar-user"><div class="user-avatar">BS</div><div><strong>Bob Sunga</strong><span>Mini Project Dashboard</span></div></div>
+      <nav class="sidebar-menu">
+        <span class="menu-section">Overview</span>
+        <a href="#dashboard" class="menu-link active" data-page="dashboard"><i>▦</i><span>Dashboard</span></a>
+        <a href="#walkthrough" class="menu-link" data-page="walkthrough"><i>↬</i><span>Method Walkthrough</span></a>
+        <a href="#audio" class="menu-link" data-page="audio"><i>≋</i><span>Real vs Fake Audio</span></a>
+        <span class="menu-section">Analysis</span>
+        <a href="#results" class="menu-link" data-page="results"><i>▥</i><span>Seven RNN Results</span></a>
+        <a href="#confusion" class="menu-link" data-page="confusion"><i>⊞</i><span>Confusion Matrix</span></a>
+        <a href="#training" class="menu-link" data-page="training"><i>⌁</i><span>Training and Threshold</span></a>
+        <span class="menu-section">Research Notes</span>
+        <a href="#methodology" class="menu-link" data-page="methodology"><i>▤</i><span>Detailed Methodology</span></a>
+        <a href="#architecture" class="menu-link" data-page="architecture"><i>▧</i><span>Architecture Guide</span></a>
+        <a href="#evaluation" class="menu-link" data-page="evaluation"><i>▨</i><span>Evaluation Guide</span></a>
+        <a href="#discussion" class="menu-link" data-page="discussion"><i>☰</i><span>Discussion</span></a>
+        <a href="#findings" class="menu-link" data-page="findings"><i>✓</i><span>Findings</span></a>
+        <a href="#limitations" class="menu-link" data-page="limitations"><i>◇</i><span>Limitations</span></a>
+      </nav>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-header">
+        <button id="sidebarToggle" class="header-icon" title="Toggle sidebar">☰</button>
+        <nav class="top-links">
+          <a href="#dashboard" data-page-link="dashboard">Home</a>
+          <a href="#walkthrough" data-page-link="walkthrough">Walkthrough</a>
+          <a href="#results" data-page-link="results">Results</a>
+          <a href="#findings" data-page-link="findings">Findings</a>
+        </nav>
+        <div class="header-search"><input type="text" placeholder="Search pages..." /><button>⌕</button></div>
+        <div class="header-actions"><button class="header-icon" id="compactToggle" title="Toggle compact view">◐</button><button class="header-icon" id="printBtn" title="Print current page">⎙</button></div>
+      </header>
+
+      <section class="page-title">
+        <div><h1 id="pageTitleText">Dashboard</h1><p id="pageSubtitleText">RNN-Based Audio Deepfake Detection Using FFT-Derived STFT Features</p></div>
+        <div class="breadcrumb"><a href="#dashboard" data-page-link="dashboard">Home</a><span>/</span><span id="breadcrumbCurrent">Dashboard</span></div>
+      </section>
+
+      <section class="page active" id="dashboard">
+        <div class="dashboard-hero">
+          <div>
+            <p class="eyebrow">Mini Project Summary</p>
+            <h2>Audio deepfake detection using STFT sequences and seven RNN architectures</h2>
+            <p>The notebook exports the same values used here, so the dashboard stays synchronized with the experiment output.</p>
+          </div>
+          <div class="hero-actions"><button data-page-link="walkthrough">View Method</button><button class="secondary" data-page-link="results">View Results</button></div>
+        </div>
+
+        <div class="summary-grid">
+          <article class="summary-card clickable-card" data-page-link="results"><div class="card-head"><h2>Best Architecture</h2><span class="chip">RNN-4</span></div><div class="summary-value" id="bestModelValue">BiGRU</div><p>Highest F1-score among the seven RNN architectures.</p><div class="mini-chart" id="miniModelChart"></div><div class="card-foot success" id="bestModelFoot">Tuned threshold 0.10</div></article>
+          <article class="summary-card clickable-card" data-page-link="results"><div class="card-head"><h2>F1-Score</h2><span class="chip green">Best</span></div><div class="summary-value" id="f1Value">0.8668</div><p>Balanced precision and recall on the test set.</p><div class="mini-bars" id="miniF1Bars"></div><div class="card-foot success">Seven-architecture comparison</div></article>
+          <article class="summary-card clickable-card" data-page-link="confusion"><div class="card-head"><h2>Confusion Matrix</h2><span class="chip purple">Errors</span></div><div class="summary-value" id="confusionValue">309 / 396</div><p>Shows correct predictions and mistakes for the best model.</p><div class="mini-bars neutral" id="miniConfusionBars"></div><div class="card-foot muted">Generated after notebook run</div></article>
+          <article class="summary-card clickable-card" data-page-link="walkthrough"><div class="card-head"><h2>Input Shape</h2><span class="chip orange">STFT</span></div><div class="summary-value" id="shapeValue">126 × 513</div><p>Time frames by frequency bins for the RNN input.</p><div class="mini-bars neutral" id="miniShapeBars"></div><div class="card-foot muted">FFT-derived STFT features</div></article>
+        </div>
+
+        <div class="process-strip" id="processStrip"></div>
+
+        <div class="content-grid">
+          <article class="panel panel-wide"><div class="panel-head"><div><h2>Architecture Metric Comparison</h2><p>One bar per RNN architecture, not one row per threshold.</p></div><div class="panel-actions"><button class="panel-collapse">☰</button></div></div><canvas id="metricCanvas" height="270"></canvas></article>
+          <article class="panel"><div class="panel-head"><div><h2>Dataset Overview</h2><p>Balanced sampled split used by the notebook.</p></div><div class="panel-actions"><button class="panel-collapse">☰</button></div></div><div class="dataset-meter"><div class="meter-main" id="sampleTotal">5,600</div><span>sampled files used</span></div><div id="datasetRows"></div></article>
+          <article class="panel panel-full"><div class="panel-head"><div><h2>Seven RNN Architectures</h2><p>Default and tuned thresholds are evaluation settings, not extra models.</p></div><div class="panel-actions"><button data-page-link="results" class="text-action">Full results</button></div></div><div class="table-wrap"><table><thead><tr><th>Rank</th><th>RNN No.</th><th>Architecture</th><th>Best Setting</th><th>Threshold</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1-score</th><th>ROC-AUC</th></tr></thead><tbody id="architectureTable"></tbody></table></div></article>
+        </div>
+      </section>
+
+      <section class="page" id="walkthrough">
+        <article class="panel panel-full"><div class="panel-head"><div><h2>Interactive Method Walkthrough</h2><p>Click each step to see what happens in the analysis pipeline.</p></div></div><div class="walkthrough-layout"><div class="stepper-list" id="methodSteps"></div><div class="step-detail" id="stepDetail"></div></div></article>
+        <div class="content-grid"><article class="panel panel-wide"><div class="panel-head"><div><h2>Real vs Fake STFT Spectrograms</h2><p>STFT means Short-Time Fourier Transform.</p></div></div><div class="image-pair"><figure><img data-visual="real_stft"><figcaption>Real audio STFT</figcaption></figure><figure><img data-visual="fake_stft"><figcaption>Fake audio STFT</figcaption></figure></div></article><article class="panel"><div class="panel-head"><div><h2>Frequency Profile</h2><p>Mean spectral behavior.</p></div></div><img class="full-img" data-visual="frequency_profile"></article></div>
+      </section>
+
+      <section class="page" id="audio">
+        <div class="content-grid audio-visual-grid">
+          <article class="panel panel-wide"><div class="panel-head"><div><h2>Waveform Overlay</h2><p>Time-domain comparison of a real and fake sample.</p></div></div><img class="full-img" data-visual="waveform_overlay"></article>
+          <article class="panel"><div class="panel-head"><div><h2>Audio Playback</h2><p>Exported by the notebook when samples are available.</p></div></div><div class="audio-card"><h3>Real Audio Sample</h3><audio id="realAudio" controls></audio><p id="realAudioNote"></p></div><div class="audio-card"><h3>Fake Audio Sample</h3><audio id="fakeAudio" controls></audio><p id="fakeAudioNote"></p></div></article>
+          <article class="panel panel-wide"><div class="panel-head"><div><h2>Real Waveform</h2><p>Amplitude over time.</p></div></div><img class="full-img" data-visual="real_waveform"></article>
+          <article class="panel"><div class="panel-head"><div><h2>Fake Waveform</h2><p>Amplitude over time.</p></div></div><img class="full-img" data-visual="fake_waveform"></article>
+          <article class="panel panel-wide"><div class="panel-head"><div><h2>Real STFT</h2><p>Time-frequency representation.</p></div></div><img class="full-img" data-visual="real_stft"></article>
+          <article class="panel"><div class="panel-head"><div><h2>Fake STFT</h2><p>Time-frequency representation.</p></div></div><img class="full-img" data-visual="fake_stft"></article>
+        </div>
+      </section>
+
+      <section class="page" id="results"><article class="panel panel-full"><div class="panel-head"><div><h2>Seven RNN Architecture Results</h2><p>Each row is one architecture. Click a row to open details.</p></div></div><div class="page-toolbar"><button class="metric-filter active" data-highlight-metric="all">All Metrics</button><button class="metric-filter" data-highlight-metric="f1">F1-score</button><button class="metric-filter" data-highlight-metric="recall">Recall</button><button class="metric-filter" data-highlight-metric="roc">ROC-AUC</button><button class="export-table" data-export-table="architectureTableFull">Export CSV</button></div><div class="table-wrap"><table><thead><tr><th>Rank</th><th>RNN No.</th><th>Architecture</th><th>Best Setting</th><th>Threshold</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1-score</th><th>ROC-AUC</th></tr></thead><tbody id="architectureTableFull"></tbody></table></div></article><article class="panel panel-full"><div class="panel-head"><div><h2>Default vs Tuned Threshold Details</h2><p>These are evaluation settings, not additional models.</p></div></div><div class="table-wrap"><table><thead><tr><th>RNN No.</th><th>Architecture</th><th>Evaluation Setting</th><th>Threshold</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1-score</th><th>ROC-AUC</th></tr></thead><tbody id="thresholdTable"></tbody></table></div></article></section>
+
+      <section class="page" id="confusion"><div class="content-grid"><article class="panel panel-wide"><div class="panel-head"><div><h2>Best Model Confusion Matrix</h2><p>Rows are true labels and columns are predicted labels.</p></div></div><img class="full-img best-confusion-img" data-visual="best_confusion_matrix"></article><article class="panel"><div class="panel-head"><div><h2>Matrix Counts</h2><p>Select an architecture.</p></div></div><select id="confusionSelect"></select><div id="confusionStats" class="confusion-stats"></div></article><article class="panel panel-full"><div class="panel-head"><div><h2>All Seven Confusion Matrices</h2><p>Small count summary for each architecture.</p></div></div><div class="confusion-summary-grid" id="confusionSummaryGrid"></div></article></div></section>
+
+      <section class="page" id="training"><div class="content-grid training-visual-grid"><article class="panel"><div class="panel-head"><div><h2>Training History Summary</h2><p>Training curves help identify overfitting or unstable learning.</p></div></div><img class="full-img training-shared-img" data-visual="training_history"></article><article class="panel"><div class="panel-head"><div><h2>Threshold Tuning</h2><p>The threshold is an evaluation setting.</p></div></div><img class="full-img training-shared-img" data-visual="threshold_curve_best"><p class="section-copy" id="thresholdNarrative">The best model used threshold tuning to improve the F1-score.</p></article><article class="panel"><div class="panel-head"><div><h2>ROC Curves</h2><p>Receiver Operating Characteristic Area Under the Curve comparison.</p></div></div><img class="full-img training-shared-img" data-visual="roc_curves"></article></div></section>
+
+      <section class="page" id="methodology"><article class="panel panel-full narrative-panel"><div class="panel-head"><div><h2>Detailed Methodology</h2><p>Research-ready explanation of the project workflow.</p></div></div><div class="method-stack" id="methodologyCards"></div></article></section>
+      <section class="page" id="architecture"><article class="panel panel-full narrative-panel"><div class="panel-head"><div><h2>Architecture Guide</h2><p>What each RNN architecture tests in the ablation study.</p></div></div><div class="architecture-grid" id="architectureCards"></div></article></section>
+      <section class="page" id="evaluation"><article class="panel panel-full narrative-panel"><div class="panel-head"><div><h2>Evaluation Guide</h2><p>How to interpret the metrics and confusion matrix.</p></div></div><div class="method-stack" id="evaluationCards"></div></article></section>
+      <section class="page" id="discussion"><article class="panel panel-full narrative-panel"><div class="panel-head"><div><h2>Discussion Narrative</h2><p>Interpretation of why the results happened.</p></div></div><div class="method-stack" id="discussionCards"></div></article></section>
+      <section class="page" id="findings"><article class="panel panel-full narrative-panel"><div class="panel-head"><div><h2>Findings Narrative</h2><p>Findings for the mini project.</p></div></div><div class="finding-summary-grid" id="findingSummaryCards"></div><section class="narrative-card conclusion-card"><h3>Conclusion</h3><p id="findingsConclusion">This study shows that architecture choice significantly affects audio deepfake detection performance using FFT-derived STFT features. The dashboard conclusion is generated from the exported notebook results.</p></section></article></section>
+      <section class="page" id="limitations"><article class="panel panel-full narrative-panel"><div class="panel-head"><div><h2>Limitations and Future Work</h2><p>Appropriate scope for a mini project.</p></div></div><div class="narrative-grid"><section class="narrative-card"><h3>Limitations</h3><p>The project uses the for-2sec subset and should be tested on more realistic audio conditions in future work. Results may change when training on more samples or when evaluated on external datasets.</p></section><section class="narrative-card"><h3>Future Work</h3><p>Future versions can test for-rerec audio, train on larger samples, try CNN-GRU hybrids, explore self-attention, and deploy a real upload-and-predict demo.</p></section></div></article></section>
+
+      <footer class="app-footer">Created by: Bob Mathew Sunga</footer>
+      <aside class="detail-drawer" id="detailDrawer"><div class="drawer-head"><h2 id="drawerTitle">Model Details</h2><button id="drawerClose">&times;</button></div><div id="drawerBody" class="drawer-body"></div></aside>
+      <div class="visual-modal" id="visualModal" aria-hidden="true">
+        <div class="visual-modal-backdrop" data-close-visual-modal></div>
+        <section class="visual-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="visualModalTitle">
+          <header class="visual-modal-head">
+            <div>
+              <h2 id="visualModalTitle">Visualization</h2>
+              <p>Adjust the size here, then close to return to the dashboard.</p>
+            </div>
+            <button class="visual-modal-close" id="visualModalClose" aria-label="Close">&times;</button>
+          </header>
+          <div class="visual-modal-toolbar">
+            <label for="visualModalScale">Size</label>
+            <input id="visualModalScale" type="range" min="50" max="160" value="100" />
+            <button type="button" id="visualModalReset">Reset</button>
+          </div>
+          <div class="visual-modal-stage" id="visualModalStage">
+            <img id="visualModalImage" alt="" />
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="assets/js/results-data.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('visualModal');
+      const modalImage = document.getElementById('visualModalImage');
+      const modalTitle = document.getElementById('visualModalTitle');
+      const modalScale = document.getElementById('visualModalScale');
+      const modalStage = document.getElementById('visualModalStage');
+      const closeBtn = document.getElementById('visualModalClose');
+      const resetBtn = document.getElementById('visualModalReset');
+      const clickableVisuals = document.querySelectorAll('#audio img[data-visual], #training img[data-visual]');
+
+      if (!modal || !modalImage || !modalTitle || !modalScale || !modalStage || !closeBtn || !resetBtn) return;
+
+      const setScale = (value) => {
+        modalImage.style.width = `${value}%`;
+      };
+
+      const closeModal = () => {
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        modalImage.removeAttribute('src');
+        modalImage.removeAttribute('alt');
+      };
+
+      clickableVisuals.forEach((img) => {
+        img.classList.add('zoomable-visual');
+        img.addEventListener('click', () => {
+          const heading = img.closest('.panel')?.querySelector('.panel-head h2')?.textContent || 'Visualization';
+          modalTitle.textContent = heading;
+          modalImage.src = img.currentSrc || img.src;
+          modalImage.alt = img.alt || heading;
+          modalScale.value = '100';
+          setScale(100);
+          modal.classList.add('open');
+          modal.setAttribute('aria-hidden', 'false');
+          document.body.classList.add('modal-open');
+          modalStage.scrollTop = 0;
+          modalStage.scrollLeft = 0;
+        });
+      });
+
+      modalScale.addEventListener('input', (event) => {
+        setScale(event.target.value);
+      });
+
+      resetBtn.addEventListener('click', () => {
+        modalScale.value = '100';
+        setScale(100);
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (event) => {
+        if (event.target.hasAttribute('data-close-visual-modal')) closeModal();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      });
+
+      const confusionSelect = document.getElementById('confusionSelect');
+      const confusionStats = document.getElementById('confusionStats');
+      const confusionImage = document.querySelector('#confusion [data-visual="best_confusion_matrix"]');
+      const confusionData = window.RNN_AUDIO_RESULTS?.confusion_matrices || [];
+
+      const renderConfusionSelection = (index) => {
+        const item = confusionData[index] || confusionData[0];
+        if (!item || !confusionStats) return;
+        const rows = [
+          ['Architecture', item.architecture || ''],
+          ['Setting', item.best_setting || ''],
+          ['Threshold', Number(item.threshold || 0).toFixed(2)],
+          ['True Negative', item.tn ?? 0],
+          ['False Positive', item.fp ?? 0],
+          ['False Negative', item.fn ?? 0],
+          ['True Positive', item.tp ?? 0]
+        ];
+        confusionStats.innerHTML = rows
+          .map(([label, value]) => `<div class="confusion-stat-row"><span>${label}</span><strong>${value}</strong></div>`)
+          .join('');
+        if (confusionImage && item.image) {
+          confusionImage.src = item.image;
+          confusionImage.alt = `${item.architecture || 'Selected'} confusion matrix`;
+        }
+      };
+
+      if (confusionSelect && confusionData.length) {
+        confusionSelect.addEventListener('change', (event) => {
+          renderConfusionSelection(Number(event.target.value) || 0);
+        });
+        renderConfusionSelection(Number(confusionSelect.value) || 0);
+      }
+    });
+  </script>
+</body>
+</html>

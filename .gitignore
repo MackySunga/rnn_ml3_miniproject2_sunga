@@ -1,0 +1,14 @@
+data/raw/
+data/raw/for-2sec/
+data/processed/
+models/
+*.keras
+*.h5
+reports/figures/
+reports/tables/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.env
+.venv/
+venv/

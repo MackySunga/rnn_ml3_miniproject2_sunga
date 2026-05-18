@@ -1,0 +1,416 @@
+window.RNN_AUDIO_RESULTS = {
+  "metadata": {
+    "title": "RNN-Based Audio Deepfake Detection Using FFT-Derived STFT Features: An Ablation Study of GRU Architecture Improvements",
+    "created_by": "Bob Mathew Sunga",
+    "generated_at": "2026-05-18T16:26:00",
+    "note": "Generated directly from the single notebook."
+  },
+  "dataset": {
+    "summary": [
+      {
+        "Split": "training",
+        "Class": "real",
+        "Count": 6978
+      },
+      {
+        "Split": "training",
+        "Class": "fake",
+        "Count": 6978
+      },
+      {
+        "Split": "validation",
+        "Class": "real",
+        "Count": 1413
+      },
+      {
+        "Split": "validation",
+        "Class": "fake",
+        "Count": 1413
+      },
+      {
+        "Split": "testing",
+        "Class": "real",
+        "Count": 544
+      },
+      {
+        "Split": "testing",
+        "Class": "fake",
+        "Count": 544
+      }
+    ],
+    "used_samples": {
+      "training": 4000,
+      "validation": 800,
+      "testing": 800,
+      "total": 5600
+    },
+    "input_shape": {
+      "time_frames": 126,
+      "frequency_bins": 513,
+      "label": "126 \u00d7 513"
+    },
+    "sample_rate": 16000,
+    "duration_seconds": 2.0,
+    "n_fft": 1024,
+    "hop_length": 256
+  },
+  "architecture_summary": [
+    {
+      "Rank": 1,
+      "RNN No.": "RNN-4",
+      "Architecture": "BiGRU",
+      "Best Setting": "Tuned",
+      "Threshold": 0.1,
+      "Accuracy": 0.88125,
+      "Precision": 0.987220447284345,
+      "Recall": 0.7725,
+      "F1-score": 0.8667601683029453,
+      "ROC-AUC": 0.9392750000000001
+    },
+    {
+      "Rank": 2,
+      "RNN No.": "RNN-1",
+      "Architecture": "Basic GRU",
+      "Best Setting": "Default",
+      "Threshold": 0.5,
+      "Accuracy": 0.83625,
+      "Precision": 0.9653979238754326,
+      "Recall": 0.6975,
+      "F1-score": 0.8098693759071117,
+      "ROC-AUC": 0.9086062500000001
+    },
+    {
+      "Rank": 3,
+      "RNN No.": "RNN-2",
+      "Architecture": "GRU + Dropout",
+      "Best Setting": "Tuned",
+      "Threshold": 0.22999999999999995,
+      "Accuracy": 0.8025,
+      "Precision": 0.9801587301587301,
+      "Recall": 0.6175,
+      "F1-score": 0.7576687116564417,
+      "ROC-AUC": 0.8918499999999999
+    },
+    {
+      "Rank": 4,
+      "RNN No.": "RNN-5",
+      "Architecture": "BiGRU + Dropout + LayerNorm",
+      "Best Setting": "Default",
+      "Threshold": 0.5,
+      "Accuracy": 0.80375,
+      "Precision": 1.0,
+      "Recall": 0.6075,
+      "F1-score": 0.7558320373250389,
+      "ROC-AUC": 0.9097062499999999
+    },
+    {
+      "Rank": 5,
+      "RNN No.": "RNN-6",
+      "Architecture": "BiGRU + Attention",
+      "Best Setting": "Tuned",
+      "Threshold": 0.4199999999999998,
+      "Accuracy": 0.7575,
+      "Precision": 0.963963963963964,
+      "Recall": 0.535,
+      "F1-score": 0.6881028938906752,
+      "ROC-AUC": 0.8221375
+    },
+    {
+      "Rank": 6,
+      "RNN No.": "RNN-7",
+      "Architecture": "BiLSTM + Attention",
+      "Best Setting": "Tuned",
+      "Threshold": 0.1,
+      "Accuracy": 0.7125,
+      "Precision": 0.9047619047619048,
+      "Recall": 0.475,
+      "F1-score": 0.6229508196721312,
+      "ROC-AUC": 0.9178625
+    },
+    {
+      "Rank": 7,
+      "RNN No.": "RNN-3",
+      "Architecture": "Stacked GRU",
+      "Best Setting": "Tuned",
+      "Threshold": 0.12,
+      "Accuracy": 0.69125,
+      "Precision": 0.9751552795031055,
+      "Recall": 0.3925,
+      "F1-score": 0.5597147950089126,
+      "ROC-AUC": 0.918625
+    }
+  ],
+  "threshold_details": [
+    {
+      "RNN No.": "RNN-1",
+      "Architecture": "Basic GRU",
+      "Evaluation Setting": "Default",
+      "Threshold": 0.5,
+      "Accuracy": 0.83625,
+      "Precision": 0.9653979238754326,
+      "Recall": 0.6975,
+      "F1-score": 0.8098693759071117,
+      "ROC-AUC": 0.9086062500000001
+    },
+    {
+      "RNN No.": "RNN-1",
+      "Architecture": "Basic GRU",
+      "Evaluation Setting": "Tuned",
+      "Threshold": 0.5499999999999998,
+      "Accuracy": 0.835,
+      "Precision": 0.9652777777777778,
+      "Recall": 0.695,
+      "F1-score": 0.8081395348837209,
+      "ROC-AUC": 0.9086062500000001
+    },
+    {
+      "RNN No.": "RNN-2",
+      "Architecture": "GRU + Dropout",
+      "Evaluation Setting": "Default",
+      "Threshold": 0.5,
+      "Accuracy": 0.79875,
+      "Precision": 0.9917695473251029,
+      "Recall": 0.6025,
+      "F1-score": 0.749611197511664,
+      "ROC-AUC": 0.8918499999999999
+    },
+    {
+      "RNN No.": "RNN-2",
+      "Architecture": "GRU + Dropout",
+      "Evaluation Setting": "Tuned",
+      "Threshold": 0.22999999999999995,
+      "Accuracy": 0.8025,
+      "Precision": 0.9801587301587301,
+      "Recall": 0.6175,
+      "F1-score": 0.7576687116564417,
+      "ROC-AUC": 0.8918499999999999
+    },
+    {
+      "RNN No.": "RNN-3",
+      "Architecture": "Stacked GRU",
+      "Evaluation Setting": "Default",
+      "Threshold": 0.5,
+      "Accuracy": 0.62625,
+      "Precision": 0.9719626168224299,
+      "Recall": 0.26,
+      "F1-score": 0.41025641025641024,
+      "ROC-AUC": 0.918625
+    },
+    {
+      "RNN No.": "RNN-3",
+      "Architecture": "Stacked GRU",
+      "Evaluation Setting": "Tuned",
+      "Threshold": 0.12,
+      "Accuracy": 0.69125,
+      "Precision": 0.9751552795031055,
+      "Recall": 0.3925,
+      "F1-score": 0.5597147950089126,
+      "ROC-AUC": 0.918625
+    },
+    {
+      "RNN No.": "RNN-4",
+      "Architecture": "BiGRU",
+      "Evaluation Setting": "Default",
+      "Threshold": 0.5,
+      "Accuracy": 0.86,
+      "Precision": 0.9897959183673469,
+      "Recall": 0.7275,
+      "F1-score": 0.8386167146974063,
+      "ROC-AUC": 0.9392750000000001
+    },
+    {
+      "RNN No.": "RNN-4",
+      "Architecture": "BiGRU",
+      "Evaluation Setting": "Tuned",
+      "Threshold": 0.1,
+      "Accuracy": 0.88125,
+      "Precision": 0.987220447284345,
+      "Recall": 0.7725,
+      "F1-score": 0.8667601683029453,
+      "ROC-AUC": 0.9392750000000001
+    },
+    {
+      "RNN No.": "RNN-5",
+      "Architecture": "BiGRU + Dropout + LayerNorm",
+      "Evaluation Setting": "Default",
+      "Threshold": 0.5,
+      "Accuracy": 0.80375,
+      "Precision": 1.0,
+      "Recall": 0.6075,
+      "F1-score": 0.7558320373250389,
+      "ROC-AUC": 0.9097062499999999
+    },
+    {
+      "RNN No.": "RNN-5",
+      "Architecture": "BiGRU + Dropout + LayerNorm",
+      "Evaluation Setting": "Tuned",
+      "Threshold": 0.7399999999999997,
+      "Accuracy": 0.79625,
+      "Precision": 1.0,
+      "Recall": 0.5925,
+      "F1-score": 0.7441130298273155,
+      "ROC-AUC": 0.9097062499999999
+    },
+    {
+      "RNN No.": "RNN-6",
+      "Architecture": "BiGRU + Attention",
+      "Evaluation Setting": "Default",
+      "Threshold": 0.5,
+      "Accuracy": 0.7575,
+      "Precision": 0.963963963963964,
+      "Recall": 0.535,
+      "F1-score": 0.6881028938906752,
+      "ROC-AUC": 0.8221375
+    },
+    {
+      "RNN No.": "RNN-6",
+      "Architecture": "BiGRU + Attention",
+      "Evaluation Setting": "Tuned",
+      "Threshold": 0.4199999999999998,
+      "Accuracy": 0.7575,
+      "Precision": 0.963963963963964,
+      "Recall": 0.535,
+      "F1-score": 0.6881028938906752,
+      "ROC-AUC": 0.8221375
+    },
+    {
+      "RNN No.": "RNN-7",
+      "Architecture": "BiLSTM + Attention",
+      "Evaluation Setting": "Default",
+      "Threshold": 0.5,
+      "Accuracy": 0.665,
+      "Precision": 0.9177215189873418,
+      "Recall": 0.3625,
+      "F1-score": 0.5197132616487455,
+      "ROC-AUC": 0.9178625
+    },
+    {
+      "RNN No.": "RNN-7",
+      "Architecture": "BiLSTM + Attention",
+      "Evaluation Setting": "Tuned",
+      "Threshold": 0.1,
+      "Accuracy": 0.7125,
+      "Precision": 0.9047619047619048,
+      "Recall": 0.475,
+      "F1-score": 0.6229508196721312,
+      "ROC-AUC": 0.9178625
+    }
+  ],
+  "confusion_matrices": [
+    {
+      "rnn_no": "RNN-4",
+      "architecture": "BiGRU",
+      "best_setting": "Tuned",
+      "threshold": 0.1,
+      "tn": 396,
+      "fp": 4,
+      "fn": 91,
+      "tp": 309,
+      "image": "assets/generated/figures/confusion_matrix_rnn_4.png"
+    },
+    {
+      "rnn_no": "RNN-1",
+      "architecture": "Basic GRU",
+      "best_setting": "Default",
+      "threshold": 0.5,
+      "tn": 390,
+      "fp": 10,
+      "fn": 121,
+      "tp": 279,
+      "image": "assets/generated/figures/confusion_matrix_rnn_1.png"
+    },
+    {
+      "rnn_no": "RNN-2",
+      "architecture": "GRU + Dropout",
+      "best_setting": "Tuned",
+      "threshold": 0.22999999999999995,
+      "tn": 395,
+      "fp": 5,
+      "fn": 153,
+      "tp": 247,
+      "image": "assets/generated/figures/confusion_matrix_rnn_2.png"
+    },
+    {
+      "rnn_no": "RNN-5",
+      "architecture": "BiGRU + Dropout + LayerNorm",
+      "best_setting": "Default",
+      "threshold": 0.5,
+      "tn": 400,
+      "fp": 0,
+      "fn": 157,
+      "tp": 243,
+      "image": "assets/generated/figures/confusion_matrix_rnn_5.png"
+    },
+    {
+      "rnn_no": "RNN-6",
+      "architecture": "BiGRU + Attention",
+      "best_setting": "Tuned",
+      "threshold": 0.4199999999999998,
+      "tn": 392,
+      "fp": 8,
+      "fn": 186,
+      "tp": 214,
+      "image": "assets/generated/figures/confusion_matrix_rnn_6.png"
+    },
+    {
+      "rnn_no": "RNN-7",
+      "architecture": "BiLSTM + Attention",
+      "best_setting": "Tuned",
+      "threshold": 0.1,
+      "tn": 380,
+      "fp": 20,
+      "fn": 210,
+      "tp": 190,
+      "image": "assets/generated/figures/confusion_matrix_rnn_7.png"
+    },
+    {
+      "rnn_no": "RNN-3",
+      "architecture": "Stacked GRU",
+      "best_setting": "Tuned",
+      "threshold": 0.12,
+      "tn": 396,
+      "fp": 4,
+      "fn": 243,
+      "tp": 157,
+      "image": "assets/generated/figures/confusion_matrix_rnn_3.png"
+    }
+  ],
+  "visuals": {
+    "real_waveform": "assets/generated/figures/real_waveform.png",
+    "fake_waveform": "assets/generated/figures/fake_waveform.png",
+    "waveform_overlay": "assets/generated/figures/waveform_overlay.png",
+    "real_stft": "assets/generated/figures/real_stft.png",
+    "fake_stft": "assets/generated/figures/fake_stft.png",
+    "frequency_profile": "assets/generated/figures/frequency_profile.png",
+    "f1_chart": "assets/generated/figures/rnn_architecture_f1_comparison.png",
+    "metric_chart": "assets/generated/figures/rnn_metric_comparison.png",
+    "roc_curves": "assets/generated/figures/roc_curves.png",
+    "best_confusion_matrix": "assets/generated/figures/best_confusion_matrix.png",
+    "probability_distribution": "assets/generated/figures/probability_distribution.png",
+    "training_history": "assets/generated/figures/training_history_summary.png",
+    "threshold_curve_best": "assets/generated/figures/threshold_curve_best.png"
+  },
+  "audio_samples": {
+    "real": "assets/generated/audio/file29933.wav_16k.wav_norm.wav_mono.wav_silence.wav_2sec.wav",
+    "fake": "assets/generated/audio/file17556.mp3.wav_16k.wav_norm.wav_mono.wav_silence.wav_2sec.wav"
+  },
+  "error_analysis": {
+    "false_positive_count": 4,
+    "false_negative_count": 91,
+    "notes": [
+      "False negatives are fake audio samples predicted as real and are especially important in deepfake detection."
+    ]
+  },
+  "best_model": {
+    "rank": 1,
+    "rnn_no": "RNN-4",
+    "architecture": "BiGRU",
+    "best_setting": "Tuned",
+    "threshold": 0.1,
+    "accuracy": 0.88125,
+    "precision": 0.987220447284345,
+    "recall": 0.7725,
+    "f1_score": 0.8667601683029453,
+    "roc_auc": 0.9392750000000001
+  }
+};
